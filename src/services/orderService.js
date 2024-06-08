@@ -65,10 +65,10 @@ export const createOrder = (req) =>
                 }
             });
             let response = '';
-            const clientUrl = req.body?.clientUrl || req.headers.origin;
+            const clientUrl = env.FRONTEND_URL;
             if (paymentMethodName === "Thanh toán qua ví VNPAY") {
                 // const apiUrl = `${req.protocol}://${req.get('host')}`;
-                const apiUrl = `${req.protocol}://${req.get('host')}`;
+                const apiUrl = env.BACKEND_URL;
                 const ipAddr = req.headers['x-forwarded-for'] ||
                     req.connection.remoteAddress ||
                     req.socket.remoteAddress ||
@@ -82,7 +82,7 @@ export const createOrder = (req) =>
                 );
             }
             else if (paymentMethodName === "Thanh toán qua ví ZaloPay") {
-                const apiUrl = `${req.protocol}://${req.get('host')}`;
+                const apiUrl = env.BACKEND_URL;
                 response = await services.createZaloPayOrder(
                     apiUrl,
                     clientUrl,

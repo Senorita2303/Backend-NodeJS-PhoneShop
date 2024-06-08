@@ -31,6 +31,7 @@ export const env = {
     API_SECRET: process.env.API_SECRET,
     CLOUDINARY_URL: process.env.CLOUDINARY_URL,
     FRONTEND_URL: process.env.FRONTEND_URL,
+    BACKEND_URL: process.env.BACKEND_URL,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     VNPAY_SECRET: process.env.VNPAY_SECRET,
