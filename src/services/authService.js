@@ -282,14 +282,7 @@ export const forgotPassword = (data) =>
                 user.passwordToken = resetPasswordToken;
                 await user.save();
                 let resetURL = '';
-                const isLocal = data.hostname === "localhost" || data.hostname === "127.0.0.1";
-                if (isLocal) {
-                    resetURL = `${env.FRONTEND_URL}/auth/jwt/reset-password/${resetPasswordToken}`;
-                } else {
-                    resetURL = `${data.protocol}://${data.get(
-                        "host"
-                    )}/auth/jwt/reset-password/${resetPasswordToken}`;
-                }
+                resetURL = `${env.FRONTEND_URL}/auth/jwt/reset-password/${resetPasswordToken}`;
                 const message = `We have received a password reset request. Please use the below link to reset your password\n\n${resetURL}\n\nIf you have not requested this email then, please ignore it.\n\nThis reset password link will be valid only for 5 minutes.`;
                 await sendEmail({
                     email: user.email,
