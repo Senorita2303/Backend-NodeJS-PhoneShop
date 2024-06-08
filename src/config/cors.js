@@ -6,15 +6,9 @@ const configCORS = (app) => {
         // Website you wish to allow to connect
         res.setHeader("Access-Control-Allow-Origin", env.FRONTEND_URL);
         // Request methods bạn muốn cho phép
-        res.setHeader(
-            "Access-Control-Allow-Methods",
-            "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-        );
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
         // Request tiêu đề bạn muốn cho phép
-        res.setHeader(
-            "Access-Control-Allow-Headers",
-            "X-Requested-With,content-type" //Search: How to extract token string from Bearer token?
-        );
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept, X-Requested-With");//Search: How to extract token string from Bearer token?
         // Đặt thành true nếu bạn cần trang web đưa cookie vào các requests được gửi
         // tới API (ví dụ: trong trường hợp bạn sử dụng phiên)
         res.setHeader("Access-Control-Allow-Credentials", true);
