@@ -45,9 +45,12 @@ const auth = async (req, res, next) => {
         // console.log(req.headers);
         // const { accessToken } = getAccessTokenFromHeaders(req.headers)
         const accessToken = req.cookies.access_token;
+        console.log("accessToken", accessToken);
         if (!accessToken) throw new UnauthorizedError("UnAuthorized");
         const { id } = jwtVerify(accessToken);
+        console.log("ID", id);
         const user = await User.findOne({ where: { id: id } });
+        console.log("User", user);
         req.user = user;
         next();
     } catch (error) {
@@ -67,9 +70,12 @@ const auth = async (req, res, next) => {
 const authPermission = async (req, res, next) => {
     try {
         const accessToken = req.cookies.access_token;
+        console.log("accessToken", accessToken);
         if (!accessToken) throw new UnauthorizedError("unauthorized");
         const { id } = jwtVerify(accessToken);
+        console.log("ID", id);
         const user = await User.findOne({ where: { id: id } });
+        console.log("User", user);
         if (!user.isAdmin) throw new UnauthorizedError("unauthorized");
         next()
     } catch (error) {
