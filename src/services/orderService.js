@@ -1,5 +1,6 @@
 const db = require("~/models/index");
 const services = require("~/services");
+import { env } from '~/config/environment';
 export const createOrder = (req) =>
     new Promise(async (resolve, reject) => {
         try {
@@ -66,6 +67,7 @@ export const createOrder = (req) =>
             let response = '';
             const clientUrl = req.body?.clientUrl || req.headers.origin;
             if (paymentMethodName === "Thanh toán qua ví VNPAY") {
+                // const apiUrl = `${req.protocol}://${req.get('host')}`;
                 const apiUrl = `${req.protocol}://${req.get('host')}`;
                 const ipAddr = req.headers['x-forwarded-for'] ||
                     req.connection.remoteAddress ||

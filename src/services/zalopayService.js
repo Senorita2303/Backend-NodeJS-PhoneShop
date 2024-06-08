@@ -22,7 +22,7 @@ export const createZaloPayOrder = (apiUrl, clientUrl, orderId, orderPayAmount) =
                 item: JSON.stringify(items),
                 embed_data: JSON.stringify(embed_data),
                 amount: orderPayAmount,
-                callback_url: 'https://ccfc-59-153-220-191.ngrok-free.app/api/payment/zalopay/callback',
+                callback_url: `${apiUrl}/api/payment/zalopay/callback`,
                 description: `Payment for the order #${orderId}`,
                 bank_code: "",
             };
