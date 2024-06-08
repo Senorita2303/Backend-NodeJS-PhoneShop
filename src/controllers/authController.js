@@ -45,6 +45,8 @@ export const verifyOTP = async (req, res) => {
       ),
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: 'none',
     }).status(StatusCodes.BAD_REQUEST).json({
       message: "Lỗi server",
       status: StatusCodes.BAD_REQUEST
@@ -61,6 +63,8 @@ export const login = async (req, res) => {
       ),
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: 'none',
     }).status(StatusCodes.OK).json(response);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -75,6 +79,8 @@ export const logout = async (req, res) => {
     return res.cookie("access_token", null, {
       expires: new Date(Date.now()), // expires curent
       httpOnly: true,
+      secure: true,
+      sameSite: 'none',
     }).status(StatusCodes.OK).json({});
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -94,6 +100,8 @@ export const loginSuccess = async (req, res) => {
       ),
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: 'none',
     }).status(StatusCodes.OK).json(response);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({
