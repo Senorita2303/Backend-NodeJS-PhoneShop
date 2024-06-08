@@ -42,9 +42,20 @@ const { User } = require('~/models')
 
 const auth = async (req, res, next) => {
     try {
-        // console.log(req.headers);
+        let accessToken = '';
+        const nameEQ = 'access_token=';
+        const ca = req.headers.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            const c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) {
+                accessToken = c.substring(nameEQ.length, c.length);
+                break;
+            }
+        }
+        console.log(accessToken);
         // const { accessToken } = getAccessTokenFromHeaders(req.headers)
-        const accessToken = req.cookies.access_token;
+        // const accessToken = req.cookies.access_token;
         if (!accessToken) throw new UnauthorizedError("UnAuthorized");
         const { id } = jwtVerify(accessToken);
         const user = await User.findOne({ where: { id: id } });
@@ -66,7 +77,17 @@ const auth = async (req, res, next) => {
 
 const authPermission = async (req, res, next) => {
     try {
-        const accessToken = req.cookies.access_token;
+        let accessToken = '';
+        const nameEQ = 'access_token=';
+        const ca = req.headers.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            const c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) {
+                accessToken = c.substring(nameEQ.length, c.length);
+                break;
+            }
+        }
         if (!accessToken) throw new UnauthorizedError("unauthorized");
         const { id } = jwtVerify(accessToken);
         const user = await User.findOne({ where: { id: id } });
