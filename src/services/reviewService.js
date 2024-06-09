@@ -22,13 +22,17 @@ export const createReview = (data) =>
 export const getAllReviews = (data) =>
     new Promise(async (resolve, reject) => {
         try {
-
             const reviews = await db.Review.findAll({
+                attributes: ['message', 'rating', 'createdAt'],
                 where: {
                     productId: data
-                }
-            })
-            console.log(reviews);
+                },
+                include: [
+                    { model: db.User, as: 'user', attributes: ['userName', 'avatarUrl'] },
+                ],
+                raw: true,
+                nest: true
+            });
             resolve({
                 success: true,
                 reviews: reviews
