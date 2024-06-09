@@ -11,3 +11,4 @@ export * from "./cartService";
 export * from "./orderService";
 export * from "./vnpayService";
 export * from "./zalopayService";
+export * from "./reviewService";

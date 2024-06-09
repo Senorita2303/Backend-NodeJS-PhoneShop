@@ -10,4 +10,5 @@ export * from "./productVariantController";
 export * from "./cartController";
 export * from "./orderController";
 export * from "./paymentController";
+export * from "./reviewController";
 // export * from "./vnpayController";
