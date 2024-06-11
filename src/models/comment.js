@@ -9,15 +9,17 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            this.belongsTo(models.User, { foreignKey: "userId" });
-            this.belongsTo(models.Product, { foreignKey: "productId" });
-            this.belongsTo(models.Comment, {
-                as: "ParentComment",
-                foreignKey: "parentCommentId",
+            this.belongsTo(models.User, {
+                foreignKey: "userId",
+                as: "user",
             });
-            this.hasMany(models.Comment, {
-                as: "SubComments",
+            this.belongsTo(models.Product, {
+                foreignKey: "productId",
+                as: "product",
+            });
+            this.belongsTo(models.Comment, {
                 foreignKey: "parentCommentId",
+                as: "parentComment",
             });
         }
     }
@@ -34,7 +36,19 @@ module.exports = (sequelize, DataTypes) => {
             imagepath: {
                 type: DataTypes.TEXT,
                 allowNull: true,
-            }
+            },
+            userId: {
+                type: DataTypes.UUID,
+                allowNull: true,
+            },
+            productId: {
+                type: DataTypes.UUID,
+                allowNull: true,
+            },
+            parentCommentId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
         },
         {
             sequelize,

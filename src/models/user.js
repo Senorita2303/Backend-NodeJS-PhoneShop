@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'carts'
       });
+      this.hasMany(models.Order, {
+        foreignKey: 'userId',
+        as: 'orders'
+      });
       this.hasMany(models.Comment, {
         foreignKey: 'userId',
         as: 'comments'
