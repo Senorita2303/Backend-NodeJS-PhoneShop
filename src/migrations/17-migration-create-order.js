@@ -47,7 +47,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'Addresses',
+                    model: 'OrderStatuses',
                     key: 'id',
                 },
                 onDelete: "set null",

@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes')
 const services = require("~/services");
 
-// CreateReview Admin route 
+// Create review
 export const createReview = async (req, res) => {
     try {
         const response = await services.createReview(req.body);
@@ -14,7 +14,7 @@ export const createReview = async (req, res) => {
     }
 };
 
-// Get all review 
+// Get all reviews
 export const getAllReviews = async (req, res) => {
     try {
         const response = await services.getAllReviews(req.params.id);

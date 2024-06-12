@@ -11,4 +11,5 @@ export * from "./cartController";
 export * from "./orderController";
 export * from "./paymentController";
 export * from "./reviewController";
+export * from "./commentController";
 // export * from "./vnpayController";
