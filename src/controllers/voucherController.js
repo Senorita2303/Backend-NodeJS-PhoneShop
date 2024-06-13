@@ -67,3 +67,16 @@ export const getVoucherDetails = async (req, res) => {
         })
     }
 };
+
+export const checkVoucherApply = async (req, res) => {
+    try {
+        const response = await services.checkVoucherApply(req);
+        return res.status(StatusCodes.OK).json(response);
+
+    } catch (error) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Lỗi server",
+            status: StatusCodes.BAD_REQUEST
+        })
+    }
+};

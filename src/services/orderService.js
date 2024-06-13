@@ -7,11 +7,29 @@ export const createOrder = (req) =>
             const userId = req.user.id;
             const { isReceiveAtStore, name, phone, email, street, ward, district, province, store } = JSON.parse(req.body.orderInfo);
             const allItems = JSON.parse(req.body.allItems);
+            const voucherApplied = JSON.parse(req.body.voucherApplied);
             const paymentMethodName = req.body.paymentMethod;
             let total = req.body.total;
             let subTotal = req.body.subTotal;
             let discount = req.body.discount;
             let shipping = req.body.shipping;
+            let userVoucher = await db.UserVoucher.findOne({
+                where: {
+                    userId: userId,
+                    voucherId: voucherApplied.id,
+                },
+                raw: false
+            });
+            if (userVoucher) {
+                userVoucher.isUsed = true;
+                await userVoucher.save();
+            } else {
+                await db.UserVoucher.create({
+                    userId: userId,
+                    voucherId: voucherApplied.id,
+                    isUsed: true,
+                });
+            };
             let paymentMethod = await db.PaymentMethod.findOne({
                 where: {
                     name: paymentMethodName
@@ -59,6 +77,19 @@ export const createOrder = (req) =>
             }));
             const createdOrderDetails = await db.OrderDetail.bulkCreate(orderDetailData);
             //clear cart 
+            for (const item of allItems) {
+                const productVariantId = item.productVariantId;
+                const quantity = item.quantity;
+
+                // Fetch the current stock for the productVariantId from the database
+                await db.ProductVariant.decrement("stock", {
+                    by: quantity,
+                    where: {
+                        id: productVariantId,
+                    }
+                });
+
+            }
             await db.Cart.destroy({
                 where: {
                     userId: userId

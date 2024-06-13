@@ -1,5 +1,5 @@
 const db = require("~/models");
-
+const { Op } = require('sequelize');
 export const createVoucher = (data) =>
     new Promise(async (resolve, reject) => {
         try {
@@ -108,6 +108,51 @@ export const getVoucherDetails = (data) =>
             } else {
                 voucherData.voucher = voucher;
                 voucherData.success = true;
+            }
+            resolve(voucherData);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+export const checkVoucherApply = (data) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const id = data.params.id;
+            let voucherData = {};
+            voucherData.errMessage = null;
+            voucherData.success = false;
+            voucherData.voucher = null;
+            let voucher = await db.Voucher.findOne({
+                where: {
+                    id: id,
+                    voucherType: "total purchase",
+                    startDate: {
+                        [Op.lte]: new Date(),
+                    },
+                    endDate: {
+                        [Op.gte]: new Date(),
+                    }
+                },
+            })
+            console.log(data.user.id);
+            if (voucher) {
+                let userVoucher = await db.UserVoucher.findOne({
+                    where: {
+                        voucherId: id,
+                        userId: data.user.id,
+                        isUsed: true,
+                    },
+                })
+                if (!userVoucher) {
+                    voucherData.voucher = voucher;
+                    voucherData.success = true;
+                }
+                else {
+                    voucherData.errMessage = "Voucher's used by this user";
+                }
+            } else {
+                voucherData.errMessage = "Voucher not found";
             }
             resolve(voucherData);
         } catch (error) {
