@@ -15,7 +15,7 @@ module.exports = {
                 unique: true
             },
             desc: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 defaultValue: null
             },
             video: {

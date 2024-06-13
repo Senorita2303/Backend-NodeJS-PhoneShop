@@ -35,6 +35,16 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
+            inventoryId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'Inventories',
+                    key: 'id',
+                },
+                onDelete: "cascade",
+                onUpdate: "cascade",
+            },
             createdAt: {
                 type: Sequelize.DATE,
             },

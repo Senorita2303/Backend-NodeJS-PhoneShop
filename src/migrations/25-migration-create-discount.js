@@ -2,33 +2,44 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Carts', {
+        await queryInterface.createTable('Discounts', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
             },
-            quantity: {
+            discountType: {
+                type: Sequelize.ENUM("percentage", "amount", "buy one get one"),
+                allowNull: false,
+            },
+            discountValue: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
-                defaultValue: 1
             },
-            productVariantId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
+            startDate: {
+                type: Sequelize.DATE,
+                allowNull: true,
+            },
+            endDate: {
+                type: Sequelize.DATE,
+                allowNull: true,
+            },
+            productId: {
+                type: Sequelize.UUID,
+                allowNull: true,
                 references: {
-                    model: 'ProductVariants',
+                    model: 'Products',
                     key: 'id',
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
-            userId: {
-                type: Sequelize.UUID,
-                allowNull: false,
+            inventoryId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
                 references: {
-                    model: 'Users',
+                    model: 'Inventories',
                     key: 'id',
                 },
                 onDelete: "cascade",
@@ -43,6 +54,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Carts');
+        await queryInterface.dropTable('Discounts');
     }
 };

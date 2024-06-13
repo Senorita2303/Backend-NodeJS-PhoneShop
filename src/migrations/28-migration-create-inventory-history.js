@@ -2,34 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Discounts', {
+        await queryInterface.createTable('InventoryHistories', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
             },
-            discountType: {
-                type: Sequelize.ENUM("percentage", "amount", "buy one get one"),
-                allowNull: false,
+            status: {
+                type: Sequelize.ENUM("in", "out"),
+                allowNull: true,
             },
-            discountValue: {
+            reference: {
+                type: Sequelize.STRING,
+            },
+            quantity: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
             },
-            startDate: {
-                type: Sequelize.DATE,
-                allowNull: true,
+            currentStock: {
+                type: Sequelize.INTEGER,
             },
-            endDate: {
-                type: Sequelize.DATE,
-                allowNull: true,
-            },
-            productId: {
-                type: Sequelize.UUID,
+            inventoryId: {
+                type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'Products',
+                    model: 'Inventories',
                     key: 'id',
                 },
                 onDelete: "cascade",
@@ -44,6 +42,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Discounts');
+        await queryInterface.dropTable('InventoryHistories');
     }
 };

@@ -2,50 +2,46 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Reviews', {
+        await queryInterface.createTable('Inventories', {
             id: {
                 allowNull: false,
-                autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
+                autoIncrement: true,
             },
-            message: {
+            stock: {
+                type: Sequelize.INTEGER,
                 allowNull: true,
-                type: Sequelize.STRING,
             },
-            rating: {
-                allowNull: true,
-                type: Sequelize.TEXT,
-            },
-            userId: {
-                type: Sequelize.UUID,
+            productVariantId: {
+                type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'Users',
+                    model: 'ProductVariants',
                     key: 'id',
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
-            productId: {
-                type: Sequelize.UUID,
+            storeBranchId: {
+                type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'Products',
+                    model: 'StoreBranches',
                     key: 'id',
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
             createdAt: {
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Reviews');
+        await queryInterface.dropTable('Inventories');
     }
 };

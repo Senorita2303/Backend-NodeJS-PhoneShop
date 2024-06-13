@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
                 unique: true,
             },
             desc: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 defaultValue: null
             },
             video: {

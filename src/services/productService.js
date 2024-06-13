@@ -41,7 +41,6 @@ export const createProduct = (data, fileData) =>
                         desc: desc,
                         thumbUrl: fileData.path,
                         discountPercentage: discountPercentage,
-                        slug: name,
                         basePrice: basePrice,
                         warrantyPeriod: warrantyPeriod,
                         brandId: brandId,

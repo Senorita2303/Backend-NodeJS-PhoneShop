@@ -2,47 +2,50 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('OrderDetails', {
+        await queryInterface.createTable('Reviews', {
             id: {
                 allowNull: false,
-                primaryKey: true,
-                type: Sequelize.INTEGER,
                 autoIncrement: true,
+                primaryKey: true,
+                type: Sequelize.INTEGER
             },
-            quantity: {
-                type: Sequelize.INTEGER,
+            message: {
                 allowNull: true,
-                defaultValue: 1
+                type: Sequelize.TEXT,
             },
-            orderId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
+            rating: {
+                allowNull: true,
+                type: Sequelize.TEXT,
+            },
+            userId: {
+                type: Sequelize.UUID,
+                allowNull: true,
                 references: {
-                    model: 'Orders',
+                    model: 'Users',
                     key: 'id',
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
-            productVariantId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
+            productId: {
+                type: Sequelize.UUID,
+                allowNull: true,
                 references: {
-                    model: 'ProductVariants',
+                    model: 'Products',
                     key: 'id',
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
             createdAt: {
-                type: Sequelize.DATE,
+                type: Sequelize.DATE
             },
             updatedAt: {
-                type: Sequelize.DATE,
-            },
+                type: Sequelize.DATE
+            }
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('OrderDetails');
+        await queryInterface.dropTable('Reviews');
     }
 };

@@ -10,7 +10,7 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             message: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 allowNull: true,
             },
             sumary: {

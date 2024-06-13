@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.init(
         {
             message: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             sumary: {
