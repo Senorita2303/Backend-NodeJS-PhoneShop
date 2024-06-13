@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "addressId",
                 as: "orders"
             });
+            this.belongsTo(models.User, {
+                foreignKey: "userId",
+                as: "user"
+            });
         }
     }
     Address.init(
@@ -33,7 +37,11 @@ module.exports = (sequelize, DataTypes) => {
             },
             houseNumber: {
                 type: DataTypes.STRING,
-            }
+            },
+            userId: {
+                type: DataTypes.UUID,
+                allowNull: true,
+            },
         },
         {
             sequelize,

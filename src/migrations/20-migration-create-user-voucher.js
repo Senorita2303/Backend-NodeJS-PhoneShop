@@ -2,27 +2,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Addresses', {
+        await queryInterface.createTable('UserVouchers', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
             },
-            province: {
-                type: Sequelize.STRING,
+            isUsed: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
                 allowNull: false,
-            },
-            district: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            ward: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            houseNumber: {
-                type: Sequelize.STRING,
             },
             userId: {
                 type: Sequelize.UUID,
@@ -34,6 +24,16 @@ module.exports = {
                 onDelete: "cascade",
                 onUpdate: "cascade",
             },
+            voucherId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'Vouchers',
+                    key: 'id',
+                },
+                onDelete: "set null",
+                onUpdate: "cascade",
+            },
             createdAt: {
                 type: Sequelize.DATE,
             },
@@ -43,6 +43,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Addresses');
+        await queryInterface.dropTable('UserVouchers');
     }
 };

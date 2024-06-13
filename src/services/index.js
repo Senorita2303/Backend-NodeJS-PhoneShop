@@ -13,3 +13,6 @@ export * from "./vnpayService";
 export * from "./zalopayService";
 export * from "./reviewService";
 export * from "./commentService";
+export * from "./storeBranchService";
+export * from "./discountService";
+export * from "./voucherService";

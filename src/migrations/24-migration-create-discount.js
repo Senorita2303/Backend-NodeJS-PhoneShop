@@ -2,33 +2,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Addresses', {
+        await queryInterface.createTable('Discounts', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
             },
-            province: {
-                type: Sequelize.STRING,
+            discountType: {
+                type: Sequelize.ENUM("percentage", "amount", "buy one get one"),
                 allowNull: false,
             },
-            district: {
-                type: Sequelize.STRING,
-                allowNull: false,
+            discountValue: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
             },
-            ward: {
-                type: Sequelize.STRING,
-                allowNull: false,
+            startDate: {
+                type: Sequelize.DATE,
+                allowNull: true,
             },
-            houseNumber: {
-                type: Sequelize.STRING,
+            endDate: {
+                type: Sequelize.DATE,
+                allowNull: true,
             },
-            userId: {
+            productId: {
                 type: Sequelize.UUID,
                 allowNull: true,
                 references: {
-                    model: 'Users',
+                    model: 'Products',
                     key: 'id',
                 },
                 onDelete: "cascade",
@@ -43,6 +44,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Addresses');
+        await queryInterface.dropTable('Discounts');
     }
 };

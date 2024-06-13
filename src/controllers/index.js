@@ -12,4 +12,7 @@ export * from "./orderController";
 export * from "./paymentController";
 export * from "./reviewController";
 export * from "./commentController";
+export * from "./storeBranchController";
+export * from "./discountController";
+export * from "./voucherController";
 // export * from "./vnpayController";

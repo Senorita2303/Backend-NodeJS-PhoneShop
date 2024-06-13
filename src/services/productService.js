@@ -224,6 +224,12 @@ export const getProductDetails = (data) =>
                 where: {
                     id: data
                 },
+                include: [
+                    { model: db.Markdown, as: 'markdown', attributes: ['contentHTML'] },
+                    { model: db.Discount, as: 'discount', attributes: ['discountType', 'discountValue', 'startDate', 'endDate'] },
+                ],
+                raw: true,
+                nest: true
             });
             let markdown = await db.Markdown.findOne({
                 where: {
@@ -296,7 +302,7 @@ export const getProductDetails = (data) =>
             resolve({
                 detailSpec: newSpecList,
                 success: true,
-                product: productData,
+                product: product,
             });
         } catch (error) {
             reject(error);

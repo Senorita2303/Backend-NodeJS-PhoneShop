@@ -2,37 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Addresses', {
+        await queryInterface.createTable('StoreBranches', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
             },
-            province: {
+            branchName: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            address: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
             district: {
                 type: Sequelize.STRING,
-                allowNull: false,
-            },
-            ward: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            houseNumber: {
-                type: Sequelize.STRING,
-            },
-            userId: {
-                type: Sequelize.UUID,
                 allowNull: true,
-                references: {
-                    model: 'Users',
-                    key: 'id',
-                },
-                onDelete: "cascade",
-                onUpdate: "cascade",
+            },
+            districtId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
+            province: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            provinceId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
             },
             createdAt: {
                 type: Sequelize.DATE,
@@ -43,6 +42,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Addresses');
+        await queryInterface.dropTable('StoreBranches');
     }
 };

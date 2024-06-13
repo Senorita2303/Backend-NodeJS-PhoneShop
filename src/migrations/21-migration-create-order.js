@@ -73,6 +73,36 @@ module.exports = {
                 onDelete: "set null",
                 onUpdate: "cascade",
             },
+            userVoucherId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'UserVouchers',
+                    key: 'id',
+                },
+                onDelete: "set null",
+                onUpdate: "cascade",
+            },
+            shippingServiceId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'ShippingServices',
+                    key: 'id',
+                },
+                onDelete: "set null",
+                onUpdate: "cascade",
+            },
+            storeBranchId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'StoreBranches',
+                    key: 'id',
+                },
+                onDelete: "set null",
+                onUpdate: "cascade",
+            },
             createdAt: {
                 type: Sequelize.DATE,
             },

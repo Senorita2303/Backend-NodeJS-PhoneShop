@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "userId",
                 as: 'user'
             });
+            this.belongsTo(models.UserVoucher, {
+                foreignKey: "userVoucherId",
+                as: 'userVoucher'
+            });
+            this.belongsTo(models.ShippingService, {
+                foreignKey: "shippingServiceId",
+                as: "shippingService"
+            });
             this.belongsTo(models.OrderStatus, {
                 foreignKey: "orderStatusId",
                 as: 'orderStatus'
@@ -22,12 +30,15 @@ module.exports = (sequelize, DataTypes) => {
             this.belongsTo(models.Address, {
                 foreignKey: "addressId",
                 as: "address"
-            })
-
+            });
             this.belongsTo(models.Payment, {
                 foreignKey: "paymentId",
                 as: "payment"
-            })
+            });
+            this.belongsTo(models.StoreBranch, {
+                foreignKey: "storeBranchId",
+                as: "storeBranch"
+            });
         }
     }
     Order.init(
@@ -75,6 +86,18 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: true,
             },
             paymentId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            storeBranchId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            shippingServiceId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            userVoucherId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },

@@ -1,11 +1,10 @@
 const { StatusCodes } = require('http-status-codes')
 const services = require("~/services");
 
-// Create Category admin route 
-export const createCategory = async (req, res) => {
+// CreateStoreBranch Admin route 
+export const createStoreBranch = async (req, res) => {
     try {
-        const fileData = req.file;
-        const response = await services.createCategory(req.body, fileData);
+        const response = await services.createStoreBranch(req.body);
         return res.status(StatusCodes.OK).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -15,10 +14,10 @@ export const createCategory = async (req, res) => {
     }
 };
 
-// Get all category admin route
-export const getAllCategories = async (req, res) => {
+// Get all storeBranch 
+export const getAllStoreBranches = async (req, res) => {
     try {
-        const response = await services.getAllCategories();
+        const response = await services.getAllStoreBranches();
         return res.status(StatusCodes.OK).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -28,12 +27,10 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
-
-// Update admin route 
-export const updateCategory = async (req, res) => {
+// Update admin route
+export const updateStoreBranch = async (req, res) => {
     try {
-        const fileData = req.file;
-        const response = await services.updateCategory(req, fileData);
+        const response = await services.updateStoreBranch(req);
         return res.status(200).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -44,25 +41,11 @@ export const updateCategory = async (req, res) => {
 };
 
 
-// Delete category - admin  
-export const deleteCategory = async (req, res) => {
+// Delete storeBranch -- admin
+export const deleteStoreBranch = async (req, res) => {
     try {
-        const response = await services.deleteCategory(req.params.id);
+        const response = await services.deleteStoreBranch(req.params);
         return res.status(StatusCodes.OK).json(response);
-    } catch (error) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            message: "Lỗi server",
-            status: StatusCodes.BAD_REQUEST
-        })
-    }
-};
-
-// Detils of category 
-export const getCategoryDetails = async (req, res) => {
-    try {
-        const response = await services.getCategoryDetails(req.params.id);
-        return res.status(StatusCodes.OK).json(response);
-
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Lỗi server",

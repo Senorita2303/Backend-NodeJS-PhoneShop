@@ -1,11 +1,10 @@
 const { StatusCodes } = require('http-status-codes')
 const services = require("~/services");
 
-// Create Category admin route 
-export const createCategory = async (req, res) => {
+// Create Voucher Admin route 
+export const createVoucher = async (req, res) => {
     try {
-        const fileData = req.file;
-        const response = await services.createCategory(req.body, fileData);
+        const response = await services.createVoucher(req.body);
         return res.status(StatusCodes.OK).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -15,10 +14,10 @@ export const createCategory = async (req, res) => {
     }
 };
 
-// Get all category admin route
-export const getAllCategories = async (req, res) => {
+// Get all voucher 
+export const getAllVouchers = async (req, res) => {
     try {
-        const response = await services.getAllCategories();
+        const response = await services.getAllVouchers();
         return res.status(StatusCodes.OK).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -28,12 +27,10 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
-
-// Update admin route 
-export const updateCategory = async (req, res) => {
+// Update admin route
+export const updateVoucher = async (req, res) => {
     try {
-        const fileData = req.file;
-        const response = await services.updateCategory(req, fileData);
+        const response = await services.updateVoucher(req);
         return res.status(200).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -44,10 +41,10 @@ export const updateCategory = async (req, res) => {
 };
 
 
-// Delete category - admin  
-export const deleteCategory = async (req, res) => {
+// Delete voucher -- admin
+export const deleteVoucher = async (req, res) => {
     try {
-        const response = await services.deleteCategory(req.params.id);
+        const response = await services.deleteVoucher(req.params);
         return res.status(StatusCodes.OK).json(response);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -57,10 +54,10 @@ export const deleteCategory = async (req, res) => {
     }
 };
 
-// Detils of category 
-export const getCategoryDetails = async (req, res) => {
+// Detils of voucher
+export const getVoucherDetails = async (req, res) => {
     try {
-        const response = await services.getCategoryDetails(req.params.id);
+        const response = await services.getVoucherDetails(req.params.id);
         return res.status(StatusCodes.OK).json(response);
 
     } catch (error) {

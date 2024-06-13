@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'reviews'
       });
+      this.hasMany(models.Address, {
+        foreignKey: 'userId',
+        as: 'addresses'
+      });
+      this.hasMany(models.UserVoucher, {
+        foreignKey: "userId",
+        as: "userVouchers"
+      });
     }
   }
   User.init({
