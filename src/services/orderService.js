@@ -13,23 +13,25 @@ export const createOrder = (req) =>
             let subTotal = req.body.subTotal;
             let discount = req.body.discount;
             let shipping = req.body.shipping;
-            let userVoucher = await db.UserVoucher.findOne({
-                where: {
-                    userId: userId,
-                    voucherId: voucherApplied.id,
-                },
-                raw: false
-            });
-            if (userVoucher) {
-                userVoucher.isUsed = true;
-                await userVoucher.save();
-            } else {
-                await db.UserVoucher.create({
-                    userId: userId,
-                    voucherId: voucherApplied.id,
-                    isUsed: true,
+            if (Object.keys(voucherApplied).length !== 0) {
+                let userVoucher = await db.UserVoucher.findOne({
+                    where: {
+                        userId: userId,
+                        voucherId: voucherApplied.id,
+                    },
+                    raw: false
                 });
-            };
+                if (userVoucher) {
+                    userVoucher.isUsed = true;
+                    await userVoucher.save();
+                } else {
+                    await db.UserVoucher.create({
+                        userId: userId,
+                        voucherId: voucherApplied.id,
+                        isUsed: true,
+                    });
+                };
+            }
             let paymentMethod = await db.PaymentMethod.findOne({
                 where: {
                     name: paymentMethodName
@@ -127,6 +129,7 @@ export const createOrder = (req) =>
                 paymentUrl: response.paymentUrl,
             });
         } catch (error) {
+            console.log(error);
             reject(error);
         }
     });
