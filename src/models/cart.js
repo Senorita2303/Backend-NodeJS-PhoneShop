@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "userId",
                 as: 'user'
             })
+            this.belongsTo(models.Inventory, {
+                foreignKey: "inventoryId",
+                as: 'inventory'
+            })
         }
     }
     Cart.init(
@@ -37,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
             userId: {
                 type: DataTypes.UUID,
                 allowNull: false,
+            },
+            inventoryId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
             },
         },
         {

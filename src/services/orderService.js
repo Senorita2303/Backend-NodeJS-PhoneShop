@@ -74,20 +74,20 @@ export const createOrder = (req) =>
             const orderDetailData = allItems.map(item => ({
                 quantity: item.quantity,
                 productVariantId: item.productVariantId,
-                userId: userId,
-                orderId: createOrder.id
+                inventoryId: item.id,
+                orderId: createOrder.id,
+
             }));
             const createdOrderDetails = await db.OrderDetail.bulkCreate(orderDetailData);
             //clear cart 
             for (const item of allItems) {
-                const productVariantId = item.productVariantId;
                 const quantity = item.quantity;
 
                 // Fetch the current stock for the productVariantId from the database
-                await db.ProductVariant.decrement("stock", {
+                await db.Inventory.decrement("stock", {
                     by: quantity,
                     where: {
-                        id: productVariantId,
+                        id: item.id,
                     }
                 });
 

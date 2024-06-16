@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "orderId",
                 as: 'order'
             })
+
+            this.belongsTo(models.Inventory, {
+                foreignKey: "inventoryId",
+                as: "inventory"
+            });
         }
     }
     OrderDetail.init(
@@ -37,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
             productVariantId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+            },
+            inventoryId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
             },
         },
         {

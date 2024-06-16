@@ -6,101 +6,122 @@ export const addProductToCart = (data) =>
             cartData.cart = {};
             cartData.errMessage = null;
             cartData.message = null;
-            const { productVariantId } = data.body;
+            const { productVariantId, inventoryId } = data.body;
             const userId = data.user.id;
-            if (!productVariantId || !userId) {
-                cartData.errMessage = "Không xác định";
-            }
-            else {
-                const cartItemExist = await db.Cart.findOne({
-                    where: {
-                        productVariantId: productVariantId,
-                        userId: userId
-                    },
-                    raw: false
-                })
-                if (cartItemExist) {
-                    cartItemExist.quantity = cartItemExist.quantity + 1;
-                    await cartItemExist.save();
-                    const carts = await db.Cart.findAll({
-                        where: {
-                            userId: userId
-                        },
-                        include: [
-                            {
-                                model: db.ProductVariant,
-                                as: 'productVariant',
-                                attributes: ['name', 'price', 'marketPrice'],
-                                include: [
-                                    { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
-                                ]
-                            },
-                        ],
-                        raw: true,
-                        nest: true
-                    });
-                    const uniqueCarts = {};
-
-                    carts.forEach(cart => {
-                        const cartId = cart.id;
-
-                        // Nếu chưa gặp variantId này, thêm vào uniqueCarts
-                        if (!uniqueCarts[cartId]) {
-                            uniqueCarts[cartId] = {
-                                ...cart,
-                                productVariant: {
-                                    ...cart.productVariant,
-                                    images: cart.productVariant.images
-                                }
-                            };
-                        }
-                    });
-                    const result = Object.values(uniqueCarts);
-                    cartData.cart = result;
-                    cartData.message = "Thêm thành công";
+            let findInventory = await db.Inventory.findOne({
+                where: {
+                    id: inventoryId
+                }
+            });
+            if (!findInventory) {
+                cartData.errMessage = "Inventory not exist";
+            } else {
+                if (findInventory.stock < 1) {
+                    cartData.errMessage = "Item quantity can't exceed the available stock";
                 }
                 else {
-                    const cartItem = await db.Cart.create({
-                        productVariantId: productVariantId,
-                        userId: userId
-                    })
-                    const carts = await db.Cart.findAll({
-                        where: {
-                            userId: userId
-                        },
-                        include: [
-                            {
-                                model: db.ProductVariant,
-                                as: 'productVariant',
-                                attributes: ['name', 'price', 'marketPrice'],
-                                include: [
-                                    { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
-                                ]
+                    if (!productVariantId || !userId) {
+                        cartData.errMessage = "Không xác định";
+                    }
+                    else {
+                        const cartItemExist = await db.Cart.findOne({
+                            where: {
+                                productVariantId: productVariantId,
+                                inventoryId: inventoryId,
+                                userId: userId
                             },
-                        ],
-                        raw: true,
-                        nest: true
-                    });
-                    const uniqueCarts = {};
+                            raw: false
+                        })
+                        if (cartItemExist) {
+                            cartItemExist.quantity = cartItemExist.quantity + 1;
+                            await cartItemExist.save();
+                            const carts = await db.Cart.findAll({
+                                where: {
+                                    userId: userId
+                                },
+                                include: [
+                                    {
+                                        model: db.ProductVariant,
+                                        as: 'productVariant',
+                                        attributes: ['name', 'price', 'marketPrice'],
+                                        include: [
+                                            { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
+                                        ]
+                                    },
+                                ],
+                                raw: true,
+                                nest: true
+                            });
+                            const uniqueCarts = {};
 
-                    carts.forEach(cart => {
-                        const cartId = cart.id;
+                            carts.forEach(cart => {
+                                const cartId = cart.id;
 
-                        // Nếu chưa gặp variantId này, thêm vào uniqueCarts
-                        if (!uniqueCarts[cartId]) {
-                            uniqueCarts[cartId] = {
-                                ...cart,
-                                productVariant: {
-                                    ...cart.productVariant,
-                                    images: cart.productVariant.images
+                                // Nếu chưa gặp variantId này, thêm vào uniqueCarts
+                                if (!uniqueCarts[cartId]) {
+                                    uniqueCarts[cartId] = {
+                                        ...cart,
+                                        productVariant: {
+                                            ...cart.productVariant,
+                                            images: cart.productVariant.images
+                                        }
+                                    };
                                 }
-                            };
+                            });
+                            const result = Object.values(uniqueCarts);
+                            cartData.cart = result;
+                            cartData.message = "Thêm thành công";
                         }
-                    });
+                        else {
+                            const cartItem = await db.Cart.create({
+                                productVariantId: productVariantId,
+                                inventoryId: inventoryId,
+                                userId: userId
+                            })
+                            const carts = await db.Cart.findAll({
+                                where: {
+                                    userId: userId
+                                },
+                                include: [
+                                    {
+                                        model: db.ProductVariant,
+                                        as: 'productVariant',
+                                        attributes: ['name', 'price', 'marketPrice'],
+                                        include: [
+                                            { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
+                                        ]
+                                    },
+                                    {
+                                        model: db.Inventory,
+                                        as: 'inventory',
+                                        attributes: ['stock'],
+                                    },
+                                ],
+                                raw: true,
+                                nest: true
+                            });
+                            const uniqueCarts = {};
 
-                    const result = Object.values(uniqueCarts);
-                    cartData.cart = result;
-                    cartData.message = "Thêm thành công";
+                            carts.forEach(cart => {
+                                const cartId = cart.id;
+
+                                // Nếu chưa gặp variantId này, thêm vào uniqueCarts
+                                if (!uniqueCarts[cartId]) {
+                                    uniqueCarts[cartId] = {
+                                        ...cart,
+                                        productVariant: {
+                                            ...cart.productVariant,
+                                            images: cart.productVariant.images
+                                        }
+                                    };
+                                }
+                            });
+
+                            const result = Object.values(uniqueCarts);
+                            cartData.cart = result;
+                            cartData.message = "Thêm thành công";
+                        }
+                    }
                 }
             }
             resolve(cartData);
@@ -122,6 +143,13 @@ export const updateItemQuantity = (data) =>
                 where: {
                     id: cartId
                 },
+                include: [
+                    {
+                        model: db.Inventory,
+                        as: 'inventory',
+                        attributes: ['stock'],
+                    },
+                ],
                 raw: false
             });
             if (!userCart) {
@@ -129,19 +157,22 @@ export const updateItemQuantity = (data) =>
             }
             else {
                 let qty = userCart.quantity + delta;
-                userCart.quantity += delta;
-                if (qty <= 0) {
-                    await db.Cart.destroy({
-                        where: {
-                            id: cartId
-                        },
-                    });
+                if (qty > userCart.inventory.stock) {
+                    cartData.errMessage = "Item quantity can't exceed the available stock";
                 } else {
-                    userCart.quantity += delta;
-                    await userCart.save();
+                    if (qty <= 0) {
+                        await db.Cart.destroy({
+                            where: {
+                                id: cartId
+                            },
+                        });
+                    } else {
+                        userCart.quantity += delta;
+                        await userCart.save();
+                    }
+                    cartData.success = true;
+                    cartData.message = "Update quantity sucessfully";
                 }
-                cartData.success = true;
-                cartData.message = "Update quantity sucessfully";
             }
             resolve(cartData);
         } catch (error) {
