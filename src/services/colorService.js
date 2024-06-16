@@ -3,7 +3,6 @@ const db = require("~/models");
 export const createColor = (data) =>
     new Promise(async (resolve, reject) => {
         try {
-            console.log(data);
             const { name, code } = data;
             const color = await db.Color.create({
                 name: name,

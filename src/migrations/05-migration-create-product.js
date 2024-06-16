@@ -30,10 +30,6 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 defaultValue: 0
             },
-            isOutOfStock: {
-                type: Sequelize.BOOLEAN,
-                defaultValue: false
-            },
             slug: {
                 type: Sequelize.STRING,
                 allowNull: true

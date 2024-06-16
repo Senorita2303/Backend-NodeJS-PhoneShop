@@ -137,10 +137,11 @@ export const createOrder = (req) =>
 export const getSingleOrder = (data) =>
     new Promise(async (resolve, reject) => {
         try {
-            const { orderId } = data;
+            const { id } = data;
+            console.log(id);
             const order = await db.Order.findAll({
                 where: {
-                    id: orderId
+                    id: id
                 },
                 include: [
                     {
@@ -172,6 +173,11 @@ export const getSingleOrder = (data) =>
                         as: 'address',
                         attributes: ['houseNumber', 'ward', 'district', 'province'],
                     },
+                    {
+                        model: db.OrderStatus,
+                        as: 'orderStatus',
+                        attributes: ['name'],
+                    },
                 ],
                 raw: true,
                 nest: true
@@ -192,6 +198,61 @@ export const getSingleOrder = (data) =>
             });
             resolve({
                 order: updatedData
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+
+export const getAdminSingleOrder = (data) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const { id } = data;
+            const order = await db.Order.findOne({
+                where: {
+                    id: id
+                },
+                include: [
+                    {
+                        model: db.Payment,
+                        as: 'payment',
+                        attributes: ['id'],
+                        include: [
+                            { model: db.PaymentMethod, as: 'paymentMethod', attributes: ['name'] },
+                            { model: db.PaymentStatus, as: 'paymentStatus', attributes: ['name'] },
+                        ]
+                    },
+                    {
+                        model: db.Address,
+                        as: 'address',
+                        attributes: ['houseNumber', 'ward', 'district', 'province'],
+                    },
+                    {
+                        model: db.OrderStatus,
+                        as: 'orderStatus',
+                        attributes: ['name'],
+                    },
+                ],
+                raw: true,
+                nest: true
+            });
+            const orderStatuses = await db.OrderStatus.findAll({
+                attributes: ['id', 'name'],
+                raw: true,
+            });
+            const paymentStatuses = await db.PaymentStatus.findAll({
+                attributes: ['id', 'name'],
+                raw: true,
+            });
+            const paymentMethods = await db.PaymentMethod.findAll({
+                attributes: ['id', 'name'],
+                raw: true,
+            });
+            order.orderStatuses = orderStatuses
+            order.paymentMethods = paymentMethods
+            order.paymentStatuses = paymentStatuses
+            resolve({
+                order: order
             });
         } catch (error) {
             reject(error);
@@ -229,6 +290,52 @@ export const getAllOrders = () =>
             resolve({
                 orders: orders
             });
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+export const updateOrder = (data) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            let orderData = {};
+            orderData.errMessage = null;
+            const id = data.params.id;
+            const body = data.body;
+            let order = await db.Order.findOne({
+                where: {
+                    id: id,
+                },
+                include: [
+                    { model: db.Payment, as: 'payment', attributes: ['id'] },
+                ],
+                raw: false,
+                nest: true
+            });
+
+            if (order) {
+                let payment = await db.Payment.findOne({
+                    where: {
+                        id: order.paymentId,
+                    },
+                    raw: false,
+                });
+                if (payment) {
+                    payment.paymentStatusId = body.paymentStatus;
+                    payment.paymentMethodId = body.paymentMethod;
+                    payment.paidDate = new Date();
+                    await payment.save();
+                    order.orderStatusId = body.orderStatus;
+                    await order.save();
+                    orderData.success = true;
+                    orderData.order = order;
+                } else {
+                    orderData.errMessage = "Payment in order not found";
+                }
+            } else {
+                orderData.errMessage = "Order not found";
+            }
+            resolve(orderData);
         } catch (error) {
             reject(error);
         }

@@ -25,16 +25,6 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
-            productId: {
-                type: Sequelize.UUID,
-                allowNull: true,
-                references: {
-                    model: 'Products',
-                    key: 'id',
-                },
-                onDelete: "cascade",
-                onUpdate: "cascade",
-            },
             inventoryId: {
                 type: Sequelize.INTEGER,
                 allowNull: true,

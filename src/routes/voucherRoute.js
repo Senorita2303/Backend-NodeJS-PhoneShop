@@ -8,5 +8,5 @@ router.put("/admin/:id", auth, authPermission, controller.updateVoucher);
 router.delete("/admin/:id", auth, authPermission, controller.deleteVoucher);
 router.get("/:id", controller.getVoucherDetails);
 router.get("/apply/:id", auth, controller.checkVoucherApply);
-
+router.get("/", auth, authPermission, controller.getAllVouchers);
 module.exports = router  

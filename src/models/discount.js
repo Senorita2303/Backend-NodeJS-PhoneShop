@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            this.belongsTo(models.Product, {
-                foreignKey: "productId",
-                as: "product"
+            this.belongsTo(models.Inventory, {
+                foreignKey: "inventoryId",
+                as: "inventory"
             });
         }
     }
@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-            productId: {
-                type: DataTypes.UUID,
+            inventoryId: {
+                type: DataTypes.INTEGER,
                 allowNull: true,
             },
         },

@@ -3,18 +3,39 @@ const db = require("~/models");
 export const createStoreBranch = (data) =>
     new Promise(async (resolve, reject) => {
         try {
+            const t = await db.sequelize.transaction();
             const { branchName, province, district, address } = data;
             const storeBranch = await db.StoreBranch.create({
                 branchName: branchName,
                 province: province,
                 address: address,
                 district: district
-            })
+            }, { transaction: t });
+            const allProductVariants = await db.ProductVariant.findAll({ attributes: ['id'] });
+
+            for (const productVariant of allProductVariants) {
+                const newInventory = await db.Inventory.create({
+                    stock: 0,
+                    productVariantId: productVariant.id,
+                    storeBranchId: storeBranch.id
+                }, { transaction: t });
+
+                await db.InventoryHistory.create({
+                    status: "in",
+                    reference: "initial",
+                    quantity: 0,
+                    inventoryId: newInventory.id,
+                    currentStock: 0
+                }, { transaction: t });
+            }
+            await t.commit();
             resolve({
                 success: true,
                 storeBranch: storeBranch
             });
         } catch (error) {
+            await t.rollback();
+            console.log(error);
             reject(error);
         }
     });

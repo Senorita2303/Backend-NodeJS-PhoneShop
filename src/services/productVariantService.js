@@ -52,7 +52,22 @@ export const createProductVariant = (data, fileData) =>
                                 productVariantId: newProductVariant.id
                             });
                         }
+                        const branches = await db.StoreBranch.findAll();
+                        for (const branch of branches) {
+                            const newInventory = await db.Inventory.create({
+                                productVariantId: newProductVariant.id,
+                                storeBranchId: branch.id,
+                                stock: 0
+                            });
 
+                            const initStock = await db.InventoryHistory.create({
+                                status: "in",
+                                reference: "initial",
+                                quantity: 0,
+                                inventoryId: newInventory.id,
+                                currentStock: 0
+                            });
+                        }
                     } else {
                         productVariantData.errMessage = `Memory ${memoryId} not found!`
                     }
@@ -97,6 +112,7 @@ export const getAllProductVariants = (data) =>
                 resultPerPage: resultPerPage,
             });
         } catch (error) {
+            console.log(error);
             reject(error);
         }
     });
@@ -105,7 +121,7 @@ export const getAllProductVariantsAdmin = () =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await db.ProductVariant.findAll({
-                attributes: ["id", "name", "sku", "stock", "price", "marketPrice"],
+                attributes: ["id", "name", "sku", "price", "marketPrice"],
                 // include: [
                 //     { model: db.Category, as: 'category', attributes: ['name'] },
                 //     { model: db.Brand, as: 'brand', attributes: ['name'] }

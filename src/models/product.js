@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'productId',
                 as: 'markdown'
             });
-            this.hasOne(models.Discount, {
-                foreignKey: 'productId',
-                as: 'discount'
-            });
             this.hasMany(models.ProductSpecification, {
                 foreignKey: 'productId',
                 as: 'productSpecs'
@@ -68,10 +64,6 @@ module.exports = (sequelize, DataTypes) => {
             views: {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
-            },
-            isOutOfStock: {
-                type: DataTypes.BOOLEAN,
-                defaultValue: false
             },
             slug: {
                 type: DataTypes.STRING,

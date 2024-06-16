@@ -22,21 +22,21 @@ export const createVoucher = (data) =>
         }
     });
 
-export const getAllVouchers = () =>
-    new Promise(async (resolve, reject) => {
-        try {
-            const vouchers = await db.Voucher.findAll({
-                raw: true
-            });
-            resolve({
-                success: true,
-                vouchers: vouchers
-            });
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    });
+// export const getAllVouchers = () =>
+//     new Promise(async (resolve, reject) => {
+//         try {
+//             const vouchers = await db.Voucher.findAll({
+//                 raw: true
+//             });
+//             resolve({
+//                 success: true,
+//                 vouchers: vouchers
+//             });
+//         } catch (error) {
+//             console.log(error);
+//             reject(error);
+//         }
+//     });
 
 export const updateVoucher = (data) =>
     new Promise(async (resolve, reject) => {

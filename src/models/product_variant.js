@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'productVariantId',
                 as: "carts"
             })
+            this.hasMany(models.Inventory, {
+                foreignKey: "productVariantId",
+                as: "inventories"
+            });
         }
     }
     ProductVariant.init(
@@ -43,16 +47,6 @@ module.exports = (sequelize, DataTypes) => {
             sku: {
                 type: DataTypes.STRING,
                 defaultValue: null
-            },
-            stock: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-                defaultValue: 0
-            },
-            sold: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-                defaultValue: 0
             },
             price: {
                 type: DataTypes.INTEGER,

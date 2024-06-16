@@ -18,16 +18,6 @@ module.exports = {
                 type: Sequelize.STRING,
                 defaultValue: null
             },
-            stock: {
-                type: Sequelize.INTEGER,
-                allowNull: true,
-                defaultValue: 0
-            },
-            sold: {
-                type: Sequelize.INTEGER,
-                allowNull: true,
-                defaultValue: 0
-            },
             price: {
                 type: Sequelize.INTEGER,
                 allowNull: true,

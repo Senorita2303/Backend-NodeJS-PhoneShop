@@ -225,7 +225,7 @@ export const getProductDetails = (data) =>
                 },
                 include: [
                     { model: db.Markdown, as: 'markdown', attributes: ['contentHTML'] },
-                    { model: db.Discount, as: 'discount', attributes: ['discountType', 'discountValue', 'startDate', 'endDate'] },
+                    // { model: db.Discount, as: 'discount', attributes: ['discountType', 'discountValue', 'startDate', 'endDate'] },
                 ],
                 raw: true,
                 nest: true

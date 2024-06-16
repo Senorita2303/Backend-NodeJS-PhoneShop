@@ -21,21 +21,31 @@ export const createDiscount = (data) =>
         }
     });
 
-export const getAllDiscounts = () =>
-    new Promise(async (resolve, reject) => {
-        try {
-            const discounts = await db.Discount.findAll({
-                raw: true
-            });
-            resolve({
-                success: true,
-                discounts: discounts
-            });
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    });
+// export const getAllDiscounts = (req) =>
+//     new Promise(async (resolve, reject) => {
+//         try {
+//             const page = parseInt(req.query.page) || 1;
+//             const pageSize = 12;
+//             const sort = req.query.sort || "ASC";
+//             const productName = req.query.name || null;
+//             const discountType = req.query.type || null;
+//             const branchId = req.query.branchId || 1;
+//             const typeQuery = discountType ? { discountType: discountType } : {};
+//             const searchQuery = productName ? { name: { [Op.like]: `%${productName}%` } } : {};
+
+//             let inventoryIds = [];
+//             const discounts = await db.Discount.findAll({
+//                 raw: true
+//             });
+//             resolve({
+//                 success: true,
+//                 discounts: discounts
+//             });
+//         } catch (error) {
+//             console.log(error);
+//             reject(error);
+//         }
+//     });
 
 export const updateDiscount = (data) =>
     new Promise(async (resolve, reject) => {

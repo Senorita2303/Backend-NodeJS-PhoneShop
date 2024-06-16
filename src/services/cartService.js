@@ -30,7 +30,7 @@ export const addProductToCart = (data) =>
                             {
                                 model: db.ProductVariant,
                                 as: 'productVariant',
-                                attributes: ['name', 'price', 'marketPrice', 'stock'],
+                                attributes: ['name', 'price', 'marketPrice'],
                                 include: [
                                     { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
                                 ]
@@ -72,7 +72,7 @@ export const addProductToCart = (data) =>
                             {
                                 model: db.ProductVariant,
                                 as: 'productVariant',
-                                attributes: ['name', 'price', 'marketPrice', 'stock'],
+                                attributes: ['name', 'price', 'marketPrice'],
                                 include: [
                                     { model: db.ProductImage, as: 'images', attributes: ['imageUrl'] },
                                 ]

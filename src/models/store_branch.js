@@ -19,11 +19,10 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "id_branch",
             //     },
             // });
-            // Store_Branch.hasMany(models.Inventory, {
-            //     foreignKey: {
-            //         name: "id_branch",
-            //     },
-            // });
+            this.hasMany(models.Inventory, {
+                foreignKey: "storeBranchId",
+                as: "inventories"
+            });
         }
     }
     StoreBranch.init(

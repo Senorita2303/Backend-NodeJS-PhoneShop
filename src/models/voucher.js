@@ -13,11 +13,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "voucherId",
                 as: "userVouchers"
             });
-            // Voucher.belongsTo(models.Inventory, {
-            //     foreignKey: {
-            //         name: "id_inventory",
-            //     },
-            // });
+            this.belongsTo(models.Inventory, {
+                foreignKey: "inventoryId",
+                as: "inventory"
+            });
         }
     }
     Voucher.init(
@@ -41,15 +40,16 @@ module.exports = (sequelize, DataTypes) => {
             minPurchaseAmount: {
                 type: DataTypes.INTEGER,
             },
-            // id_inventory: {
-            //     type: DataTypes.INTEGER,
-            // },
             startDate: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
             endDate: {
                 type: DataTypes.DATE,
+                allowNull: true,
+            },
+            inventoryId: {
+                type: DataTypes.INTEGER,
                 allowNull: true,
             },
         },

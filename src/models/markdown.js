@@ -26,15 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         contentHTML: {
             allowNull: true,
-            type: DataTypes.TEXT('long'),
+            type: DataTypes.TEXT,
         },
         contentMarkdown: {
             allowNull: true,
-            type: DataTypes.TEXT('long'),
+            type: DataTypes.TEXT,
         },
         description: {
             allowNull: true,
-            type: DataTypes.TEXT('long'),
+            type: DataTypes.TEXT,
         },
         productId: {
             type: DataTypes.UUID,

@@ -40,6 +40,20 @@ export const getSingleOrder = async (req, res) => {
   // });
 };
 
+// Get admin single order 
+export const getAdminSingleOrder = async (req, res) => {
+  try {
+    console.log('vailon');
+    const response = await services.getAdminSingleOrder(req.params);
+    return res.status(StatusCodes.OK).json(response);
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: "Lỗi server",
+      status: StatusCodes.BAD_REQUEST
+    })
+  }
+};
+
 // Get all orders for user
 export const myOrders = async (req, res) => {
   try {
@@ -65,6 +79,7 @@ export const getAllOrders = async (req, res) => {
     const response = await services.getAllOrders();
     return res.status(StatusCodes.OK).json(response);
   } catch (error) {
+    console.log(error);
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: "Lỗi server",
       status: StatusCodes.BAD_REQUEST

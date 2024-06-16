@@ -10,15 +10,15 @@ module.exports = {
             },
             contentHTML: {
                 allowNull: true,
-                type: Sequelize.TEXT('long')
+                type: Sequelize.TEXT
             },
             contentMarkdown: {
                 allowNull: true,
-                type: Sequelize.TEXT('long')
+                type: Sequelize.TEXT
             },
             description: {
                 allowNull: true,
-                type: Sequelize.TEXT('long')
+                type: Sequelize.TEXT
             },
             productId: {
                 type: Sequelize.UUID,
