@@ -47,8 +47,9 @@ export const getAllStoreBranches = () =>
                 raw: true
             });
             resolve({
-                success: true,
-                storeBranches: storeBranches
+                code: 200,
+                message: "Get branch data success",
+                data: storeBranches
             });
         } catch (error) {
             console.log(error);

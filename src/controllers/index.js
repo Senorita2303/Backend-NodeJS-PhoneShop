@@ -16,4 +16,5 @@ export * from "./storeBranchController";
 export * from "./discountController";
 export * from "./voucherController";
 export * from "./inventoryController";
+export * from "./salesReportController";
 // export * from "./vnpayController";

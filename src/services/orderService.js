@@ -99,7 +99,7 @@ export const createOrder = (req) =>
             });
             let response = '';
             const clientUrl = env.FRONTEND_URL;
-            if (paymentMethodName === "Thanh toán qua ví VNPAY") {
+            if (paymentMethodName === "Thanh toán qua ví VnPay") {
                 // const apiUrl = `${req.protocol}://${req.get('host')}`;
                 const apiUrl = env.BACKEND_URL;
                 const ipAddr = req.headers['x-forwarded-for'] ||
@@ -122,6 +122,12 @@ export const createOrder = (req) =>
                     createOrder.id.toString(),
                     total,
                 );
+            } else if (paymentMethodName === "Thanh toán khi nhận hàng") {
+                resolve({
+                    id: createOrder.id,
+                    success: false,
+                    paymentUrl: `${clientUrl}/order-success/${createOrder.id}`
+                });
             }
             resolve({
                 id: createOrder.id,

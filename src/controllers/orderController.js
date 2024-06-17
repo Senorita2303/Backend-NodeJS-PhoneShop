@@ -7,7 +7,11 @@ const services = require("~/services");
 export const createOrder = async (req, res) => {
   try {
     const response = await services.createOrder(req);
-    return res.status(StatusCodes.OK).json(response);
+    if (response.clientUrl) {
+      res.redirect(`${response.clientUrl}/order-success/${response.orderId}`);
+    }
+    else
+      return res.status(StatusCodes.OK).json(response);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: "Lỗi server",

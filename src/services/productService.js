@@ -76,24 +76,46 @@ export const createProduct = (data, fileData) =>
 export const getAllProducts = (data) =>
     new Promise(async (resolve, reject) => {
         try {
-            const { keyword, page, price } = data?.query;
+            const { keyword, page, price, category, brand } = data?.query;
             let MiN = parseInt(price.gte);
             let MaX = parseInt(price.lte);
+            let selectedBrand = '';
+            let selectedCategory = '';
+            let conditions = {
+                name: {
+                    [Op.like]: `%${keyword}%`
+                },
+                basePrice: {
+                    [Op.and]: {
+                        [Op.gt]: MiN,
+                        [Op.lte]: MaX,
+                    }
+                }
+            };
+            if (category) {
+                selectedCategory = await db.Category.findOne({
+                    attributes: ["id"],
+                    where: {
+                        name: category
+                    }
+                });
+                conditions.categoryId = selectedCategory.id;
+            }
+            if (brand) {
+                selectedBrand = await db.Brand.findOne({
+                    attributes: ["id"],
+                    where: {
+                        name: brand
+                    }
+                });
+                conditions.brandId = selectedBrand.id;
+            }
+            console.log(selectedBrand, selectedCategory)
             const resultPerPage = 10; // Number of products visible per page
             const productsCount = await db.Product.count(); // Get total number of products
             const productList = await db.Product.findAll({
                 attributes: ["createdAt", "brandId", "categoryId", "id", "name", "desc", "video", "basePrice", "discountPercentage", "thumbUrl"],
-                where: {
-                    name: {
-                        [Op.like]: `%${keyword}%`
-                    },
-                    basePrice: {
-                        [Op.and]: {
-                            [Op.gt]: MiN,
-                            [Op.lte]: MaX,
-                        }
-                    }
-                }
+                where: conditions
             });
             // Create an instance of the ApiFeatures class, passing the ProductModel.find() query and req.query (queryString)
             // const apiFeature = new ApiFeatures(productList, req.query)
@@ -115,7 +137,6 @@ export const getAllProducts = (data) =>
                 resultPerPage: resultPerPage,
                 // filteredProductCount: filteredProductCount,
             });
-            console.log(products, productsCount, resultPerPage);
         } catch (error) {
             reject(error);
         }
