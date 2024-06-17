@@ -47,7 +47,6 @@ export const getSingleOrder = async (req, res) => {
 // Get admin single order 
 export const getAdminSingleOrder = async (req, res) => {
   try {
-    console.log('vailon');
     const response = await services.getAdminSingleOrder(req.params);
     return res.status(StatusCodes.OK).json(response);
   } catch (error) {

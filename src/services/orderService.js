@@ -346,3 +346,43 @@ export const updateOrder = (data) =>
             reject(error);
         }
     });
+
+export const myOrders = (req) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const orders = await db.Order.findAll({
+                where: {
+                    userId: req.user.id
+                },
+                include: [
+                    {
+                        model: db.Payment,
+                        as: 'payment',
+                        attributes: ['id'],
+                        include: [
+                            { model: db.PaymentMethod, as: 'paymentMethod', attributes: ['name'] },
+                            { model: db.PaymentStatus, as: 'paymentStatus', attributes: ['name'] },
+                        ]
+                    },
+                    {
+                        model: db.Address,
+                        as: 'address',
+                        attributes: ['houseNumber', 'ward', 'district', 'province'],
+                    },
+                    {
+                        model: db.OrderStatus,
+                        as: 'orderStatus',
+                        attributes: ['name'],
+                    },
+                ],
+                raw: true,
+                nest: true
+            });
+            resolve({
+                orders: orders
+            });
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
